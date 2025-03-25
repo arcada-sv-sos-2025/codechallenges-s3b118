@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         textView = findViewById(R.id.helloworldmessage);
-        calculateButton = findViewById(R.id.calculateButton); // Assuming the button has id 'calculateButton'
+        calculateButton = findViewById(R.id.calculateButton);
 
         textView.setText("My app works!");
 
