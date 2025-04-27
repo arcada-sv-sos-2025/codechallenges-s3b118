@@ -3,46 +3,59 @@ package fi.arcada.codechallenge;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView textView;
-    private Button calculateButton;
-    private ArrayList<Double> myDoubleArray;
+    private TextView resultTextView;
+    private EditText windowInput;
+    private Button calcButton;
+
+    double[] temperatures = { 17.5, 16.0, 16.5, 15.0, 17.5, 18.0, 15.5, 20.0, 19.5, 16.0 };
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textView = findViewById(R.id.helloworldmessage);
-        calculateButton = findViewById(R.id.calculateButton);
+        resultTextView = findViewById(R.id.textView);
+        windowInput = findViewById(R.id.inputWindow);
+        calcButton = findViewById(R.id.calcButton);
 
-        textView.setText("My app works!");
-
-        myDoubleArray = new ArrayList<>();
-        myDoubleArray.add(2.1);
-        myDoubleArray.add(4.2);
-        myDoubleArray.add(6.3);
-        myDoubleArray.add(8.4);
-        myDoubleArray.add(10.5);
-        System.out.println(myDoubleArray);
-
-        calculateButton.setOnClickListener(new View.OnClickListener() {
+        calcButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                calculate();
+            public void onClick(View view) {
+                String input = windowInput.getText().toString();
+                if (input.isEmpty()) {
+                    Toast.makeText(MainActivity.this, getString(R.string.toast_enter_window), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                int windowSize = Integer.parseInt(input);
+
+                if (windowSize < 1 || windowSize > temperatures.length) {
+                    Toast.makeText(MainActivity.this, getString(R.string.toast_invalid_window), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                double[] sma = Statistics.movingAvg(temperatures, windowSize);
+
+                // Formatera resulat (avrundar till 2 decimaler)
+                StringBuilder formattedResult = new StringBuilder("[");
+                for (int i = 0; i < sma.length; i++) {
+                    formattedResult.append(String.format("%.2f", sma[i]));
+                    if (i != sma.length - 1) {
+                        formattedResult.append(", ");
+                    }
+                }
+                formattedResult.append("]");
+
+                resultTextView.setText(formattedResult.toString());
             }
         });
-    }
-
-    private void calculate() {
-        double meanValue = Statistics.calcMean(myDoubleArray);
-        textView.setText("Mean value: " + meanValue);
     }
 }

@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">CodeChallenge</string>
+    <string name="app_name">Glidande medelvärde app</string>
+    <string name="label_window">Fönsterstorlek:</string>
+    <string name="hint_window_size">Användar-input</string>
+    <string name="button_calculate">Räkna ut glidande medelvärde</string>
+    <string name="result_placeholder">Resultat skrivs ut här</string>
+    <string name="toast_enter_window">Specifiera en fönsterstorlek</string>
+    <string name="toast_invalid_window">Fönsterstorlek måste vara mellan 1-10</string>
 </resources>
